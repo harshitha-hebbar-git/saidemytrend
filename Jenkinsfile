@@ -26,7 +26,7 @@ pipeline {                                                              // 1 // 
 
         stage('SonarQube analysis') {                                   // 8 // Creates a stage named 'SonarQube analysis'
             environment {                                               // 9 // Defines environment variables specific to this stage
-                scannerHome = tool 'saidemy-sonar-scanner'              // Sets the SonarQube scanner tool
+                scannerHome = tool 'saidemy-sonarqube-scanner'              // Sets the SonarQube scanner tool
             }                                                           // 9 // Ends the environment block for this stage
 
             steps {                                                     // 10 // Defines the steps that will be executed in this stage
@@ -39,7 +39,7 @@ pipeline {                                                              // 1 // 
         stage("Quality Gate") {						// 11 // Creates a stage named 'Quality Gate'
 	    steps {                                                     // 12 // Defines the steps that will be executed in this stage
 		script {						// 13 // Allows running custome Groovy script inside the pipeline
-		    timeout{time: 1, unit: 'HOURS'} {			// Sets a timeout of 1 hour for the quality gate check
+		    timeout(time: 1, unit: 'HOURS') {			// Sets a timeout of 1 hour for the quality gate check
 			def qg = waitForQualityGate()			// Waits for the quality gate result from SonarQube
 			if (qg.status != 'OK') {			// Checks if quality gate status is not OK
 				error "Pipeline aborted due to quality gate failure; ${qg.status}"
